@@ -1,26 +1,66 @@
 #!/bin/bash
 
-#Author: Hanzo
-#Created: 31/7/22
-#Modified: 9/10/22
+# Author: Hanzo
+# Created: 31/07/2022
+# Modified: 15/09/2026
 
-#Description
-#Lets users  keep their environment updated
+# Description:
+# Updates the system packages and checks whether a reboot is required.
 
-#Usage
-#update.sh
+# Usage:
+# ./update.sh
 
-distro=/etc/os-release
+set -e
 
+# Load distribution information
+source /etc/os-release
 
-if grep  -q "Ubuntu" $distro || grep -q "Debian" $distro; then
-	sudo apt update && sudo apt -y upgrade
-elif grep -q "CentOS" $distro || grep -q "rhel" $distro; then
-	sudo yum update -y
+echo "Updating system: $PRETTY_NAME"
+echo
+
+case "$ID" in
+    ubuntu|debian)
+        echo "Running APT update..."
+        sudo apt update
+        sudo apt upgrade -y
+        ;;
+
+    rhel|centos|fedora|rocky|almalinux)
+        if command -v dnf >/dev/null 2>&1; then
+            echo "Running DNF update..."
+            sudo dnf upgrade -y
+        elif command -v yum >/dev/null 2>&1; then
+            echo "Running YUM update..."
+            sudo yum update -y
+        else
+            echo "Error: Neither dnf nor yum was found."
+            exit 1
+        fi
+        ;;
+
+    *)
+        echo "Unsupported distribution: $PRETTY_NAME"
+        echo "Please update this script to support your distribution."
+        exit 1
+        ;;
+esac
+
+echo
+echo "System update completed successfully."
+
+# Check whether a reboot is required
+if [ -f /var/run/reboot-required ]; then
+    echo
+    echo "A reboot is required to complete the updates."
+
+    read -r -p "Do you want to reboot now? [y/N]: " answer
+
+    if [[ "$answer" =~ ^[Yy]$ ]]; then
+        echo "Rebooting..."
+        sudo systemctl reboot
+    else
+        echo "Reboot skipped. Please reboot the system later."
+    fi
 else
-	echo "Please update this script and add your Distro"
-fi
-
-if [ -f /var/run/reboot-required ]; then # This statement will reboot the system if it required after an update.
-	reboot
+    echo "No reboot is required."
 fi
