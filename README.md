@@ -52,7 +52,7 @@ chmod +x *.sh
 You can then run the scripts from the repository directory.
 
 Scripts
-1. backup_script.sh
+## 1. backup_script.sh
 
 Creates a compressed .tar.gz archive of the current user's home directory.
 
@@ -90,7 +90,7 @@ tar -czf
 
 The contents of $HOME are archived without requiring the script to know the username or home-directory path in advance.
 
-2. connection.sh
+## 2. connection.sh
 
 A simple connectivity-checking utility that repeatedly tests whether an IP address or hostname is reachable.
 
@@ -120,7 +120,7 @@ When connectivity is detected:
 
 Press Ctrl+C to stop the script while it is retrying.
 
-3. findlog.sh
+## 3. findlog.sh
 
 findlog.sh is the most feature-rich utility in this repository.
 
@@ -327,7 +327,8 @@ Code	Meaning
 3	journalctl operation failed
 4	Search operation failed
 127	Required command not found
-4. update.sh
+
+## 4. update.sh
 
 Updates supported Linux distributions and checks whether the system requires a reboot.
 
