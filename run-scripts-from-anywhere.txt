@@ -1,8 +1,50 @@
-To run scripts from anywhere you've to add the $PATH to '.profile file' its a hidden file.
+Add a Scripts Directory to Your PATH
 
-Steps to produce:
-1. Type command 'nano ~/.profile'
-2. Go all the way to the botton and provide the path shown format in step 3
-3. export PATH="$PATH:/path/of/scripts" 
-4. Save the file and exit
-5. Reload the file run this command: 'source ~/.profile'
+To run your scripts from anywhere in the terminal, add the directory containing your scripts to the PATH environment variable.
+
+The ~/.profile file is a hidden file located in your home directory.
+
+Steps
+
+Open the ~/.profile file:
+
+nano ~/.profile
+
+
+Go to the bottom of the file and add the following line. Replace /path/of/scripts with the actual directory where your scripts are stored:
+
+export PATH="$PATH:/path/of/scripts"
+
+
+Example:
+
+export PATH="$PATH:$HOME/scripts"
+
+
+Save the file and exit nano:
+
+Press Ctrl + O, then press Enter to save.
+Press Ctrl + X to exit.
+
+Reload the ~/.profile file to apply the changes:
+
+source ~/.profile
+
+
+Verify that the directory was added to your PATH:
+
+echo $PATH
+
+
+You should now be able to run your scripts from anywhere in the terminal without specifying their full path.
+
+If the Script Doesn't Run
+
+Make sure the script has execute permission:
+
+chmod +x /path/of/scripts/your-script
+
+
+Then you can run it directly:
+
+your-script
